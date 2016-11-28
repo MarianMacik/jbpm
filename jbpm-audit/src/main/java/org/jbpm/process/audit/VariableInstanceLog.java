@@ -34,7 +34,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Entity
-@SequenceGenerator(name="variableInstanceLogIdSeq", sequenceName="VAR_INST_LOG_ID_SEQ", allocationSize=1)
+@SequenceGenerator(name="variableInstanceLogIdSeqqqqq", sequenceName="VAR_INST_LOG_ID_SEQ", allocationSize=1)
 public class VariableInstanceLog implements Serializable, AuditEvent, org.kie.api.runtime.manager.audit.VariableInstanceLog {
     
 	private static final Logger logger = LoggerFactory.getLogger(VariableInstanceLog.class);
@@ -46,11 +46,12 @@ public class VariableInstanceLog implements Serializable, AuditEvent, org.kie.ap
 	// entity fields
 	
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator="variableInstanceLogIdSeq")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator="variableInstanceLogIdSeqqaa")
 	private long id;
     
     private long processInstanceId;
-    
+
+	@Column
     private String processId;
     
     @Temporal(TemporalType.TIMESTAMP)
@@ -66,7 +67,12 @@ public class VariableInstanceLog implements Serializable, AuditEvent, org.kie.ap
     private String oldValue;
     
     private String externalId;
-    
+
+	@Override
+	public void doNothing() {
+
+	}
+
 	// constructors
     
     public VariableInstanceLog() {

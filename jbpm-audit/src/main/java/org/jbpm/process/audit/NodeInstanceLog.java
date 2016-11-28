@@ -44,7 +44,7 @@ public class NodeInstanceLog implements Serializable, AuditEvent, org.kie.api.ru
     private long processInstanceId;
     private String processId;
     
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     @Column(name = "log_date")
     private Date date;
     
@@ -60,9 +60,14 @@ public class NodeInstanceLog implements Serializable, AuditEvent, org.kie.api.ru
     
     public NodeInstanceLog() {
     }
-    
+
+	@Override
+	public void doNothing() {
+
+	}
+
 	public NodeInstanceLog(int type, long processInstanceId, String processId,
-			               String nodeInstanceId, String nodeId, String nodeName) {
+						   String nodeInstanceId, String nodeId, String nodeName) {
 		this.type = type;
         this.processInstanceId = processInstanceId;
         this.processId = processId;

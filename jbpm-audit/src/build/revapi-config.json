@@ -1,0 +1,16 @@
+{
+  "revapi": {
+    /*"java": {
+      "filter": {
+        "annotated": {
+          "regex": true,
+          "include": [
+            "@javax\\.persistence.*"
+          ]
+        }
+      }
+    },*/
+    "_comment": "Changes between 6.4.0.Final and master. These changes are desired and thus ignored. They should be removed when 7.0.0.Final is available.",
+    "ignore": []
+  }
+}

@@ -61,8 +61,13 @@ public class ProcessInstanceLog implements Serializable, AuditEvent, org.kie.api
     private Long parentProcessInstanceId;
     
     @Column(nullable=true)
-    private String outcome;    
-    
+    private String outcome;
+
+    @Override
+    public void doNothing() {
+
+    }
+
     private Long duration;
     
     @Column(name="user_identity")

@@ -22,5 +22,7 @@ public interface AuditEvent {
     public String getProcessId();
     
     public Long getProcessInstanceId();
+
+    public void doNothing();
     
 }
