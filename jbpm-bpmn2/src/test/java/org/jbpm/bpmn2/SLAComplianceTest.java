@@ -441,6 +441,89 @@ public class SLAComplianceTest extends JbpmBpmn2TestCase {
         
         ksession.dispose();
     }
+
+    @Test
+    public void testSLAonUserTaskViolatedCorrectRowUpdated() throws Exception {
+        CountDownLatch latch = new CountDownLatch(1);
+        final ProcessEventListener listener = new DefaultProcessEventListener(){
+
+            @Override
+            public void afterSLAViolated(SLAViolatedEvent event) {
+                latch.countDown();
+            }
+
+        };
+        KieBase kbase = createKnowledgeBase("BPMN2-UserTaskWithSLAOnTask.bpmn2");
+        KieSession ksession = createKnowledgeSession(kbase);
+        TestWorkItemHandler workItemHandler = new TestWorkItemHandler();
+        ksession.getWorkItemManager().registerWorkItemHandler("Human Task", workItemHandler);
+        ksession.addEventListener(listener);
+
+        ProcessInstance processInstance = null;
+        NodeInstance userTaskNode = null;
+
+        for (int i = 0; i < 100; i++) {
+            processInstance = ksession.startProcess("UserTask");
+            assertTrue(processInstance.getState() == ProcessInstance.STATE_ACTIVE);
+
+            WorkItem workItem = workItemHandler.getWorkItem();
+            assertNotNull(workItem);
+            assertEquals("john", workItem.getParameter("ActorId"));
+
+            processInstance = ksession.getProcessInstance(processInstance.getId());
+            assertTrue(processInstance.getState() == ProcessInstance.STATE_ACTIVE);
+
+            Collection<NodeInstance> active = ((WorkflowProcessInstance)processInstance).getNodeInstances();
+            assertEquals(1, active.size());
+
+            userTaskNode = active.iterator().next();
+
+            ksession.getWorkItemManager().completeWorkItem(workItem.getId(), null);
+            assertProcessInstanceFinished(processInstance, ksession);
+
+            int slaCompliance = getSLAComplianceForProcessInstance(processInstance);
+            assertEquals(ProcessInstance.SLA_NA, slaCompliance);
+
+            slaCompliance = getSLAComplianceForNodeInstance(processInstance.getId(), (org.jbpm.workflow.instance.NodeInstance) userTaskNode, NodeInstanceLog.TYPE_EXIT);
+            assertEquals(ProcessInstance.SLA_MET, slaCompliance);
+        }
+
+
+        processInstance = ksession.startProcess("UserTask");
+        assertTrue(processInstance.getState() == ProcessInstance.STATE_ACTIVE);
+
+        WorkItem workItem = workItemHandler.getWorkItem();
+        assertNotNull(workItem);
+        assertEquals("john", workItem.getParameter("ActorId"));
+
+        boolean slaViolated = latch.await(10, TimeUnit.SECONDS);
+        assertTrue("SLA was not violated while it is expected", slaViolated);
+
+        processInstance = ksession.getProcessInstance(processInstance.getId());
+        assertTrue(processInstance.getState() == ProcessInstance.STATE_ACTIVE);
+
+        int slaCompliance = getSLAComplianceForProcessInstance(processInstance);
+        assertEquals(ProcessInstance.SLA_NA, slaCompliance);
+
+        Collection<NodeInstance> active = ((WorkflowProcessInstance)processInstance).getNodeInstances();
+        assertEquals(1, active.size());
+
+        userTaskNode = active.iterator().next();
+
+        slaCompliance = getSLAComplianceForNodeInstance(processInstance.getId(), (org.jbpm.workflow.instance.NodeInstance) userTaskNode, NodeInstanceLog.TYPE_ENTER);
+        assertEquals(ProcessInstance.SLA_VIOLATED, slaCompliance);
+
+        ksession.getWorkItemManager().completeWorkItem(workItem.getId(), null);
+        assertProcessInstanceFinished(processInstance, ksession);
+
+        slaCompliance = getSLAComplianceForProcessInstance(processInstance);
+        assertEquals(ProcessInstance.SLA_NA, slaCompliance);
+
+        slaCompliance = getSLAComplianceForNodeInstance(processInstance.getId(), (org.jbpm.workflow.instance.NodeInstance) userTaskNode, NodeInstanceLog.TYPE_EXIT);
+        assertEquals(ProcessInstance.SLA_VIOLATED, slaCompliance);
+
+        ksession.dispose();
+    }
     
     /*
      * Helper methods
