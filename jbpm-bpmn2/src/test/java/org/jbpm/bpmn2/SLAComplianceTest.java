@@ -442,7 +442,7 @@ public class SLAComplianceTest extends JbpmBpmn2TestCase {
         ksession.dispose();
     }
 
-    @Test(timeout = 60000)
+    @Test
     public void testSLAonUserTaskViolatedCorrectRowUpdated() throws Exception {
         CountDownLatch latch = new CountDownLatch(1);
         final ProcessEventListener listener = new DefaultProcessEventListener(){
