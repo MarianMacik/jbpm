@@ -144,7 +144,7 @@ public abstract class JbpmBpmn2TestCase extends AbstractBaseTest {
     private RequirePersistence testReqPersistence;
 
     @Rule
-    public Timeout globalTimeout = Timeout.seconds(60);
+    public Timeout globalTimeout = Timeout.seconds(600);
 
     @Rule
     public TestRule watcher = new TestWatcher() {
