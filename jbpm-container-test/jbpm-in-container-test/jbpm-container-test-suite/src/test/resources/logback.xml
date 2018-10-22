@@ -64,58 +64,63 @@
   <!-- log all classes in org.jbpm.test package -->
   <logger name="org.jbpm.test">
     <level value="debug" />
-    <appender-ref ref="asyncFrameworkFileAppender" />
-    <appender-ref ref="asyncConsoleAppender" />
+    <!--<appender-ref ref="asyncFrameworkFileAppender" />
+    <appender-ref ref="asyncConsoleAppender" />-->
   </logger>
 
   <!-- Other classes -->
   <logger name="org.jboss.security">
-    <level value="debug" />
+    <level value="info" />
     <appender-ref ref="asyncServerFileAppender" />
   </logger>
 
   <logger name="org.jnp.interfaces">
-    <level value="debug" />
+    <level value="info" />
     <appender-ref ref="asyncServerFileAppender" />
   </logger>
 
   <logger name="org.jboss.remoting">
-    <level value="debug" />
+    <level value="info" />
     <appender-ref ref="asyncServerFileAppender" />
   </logger>
 
   <logger name="org.jboss.profileservice">
-    <level value="debug" />
+    <level value="info" />
     <appender-ref ref="asyncServerFileAppender" />
   </logger>
 
   <logger name="org.apache.commons.httpclient">
-    <level value="debug" />
+    <level value="info" />
     <appender-ref ref="asyncServerFileAppender" />
   </logger>
 
   <logger name="httpclient">
-    <level value="debug" />
+    <level value="info" />
     <appender-ref ref="asyncServerFileAppender" />
   </logger>
 
   <logger name="Sisu">
-    <level value="debug" />
+    <level value="info" />
     <appender-ref ref="asyncServerFileAppender" />
   </logger>
 
   <logger name="com.arjuna">
-    <level value="debug" />
+    <level value="info" />
     <appender-ref ref="asyncServerFileAppender" />
   </logger>
 
   <logger name="org.jboss.jbossas">
-    <level value="debug" />
+    <level value="info" />
     <appender-ref ref="asyncServerFileAppender" />
   </logger>
 
   <logger name="org.hibernate">
-    <level value="debug" />
+    <level value="info" />
     <appender-ref ref="asyncServerFileAppender" />
   </logger>
+
+  <root level="info">
+    <appender-ref ref="asyncFrameworkFileAppender" />
+    <appender-ref ref="asyncConsoleAppender" />
+  </root>
 </configuration>

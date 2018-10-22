@@ -17,5 +17,10 @@
       <artifactId>kie-api</artifactId>
       <scope>provided</scope>
     </dependency>
+    <dependency>
+      <groupId>org.jboss.spec.javax.xml.bind</groupId>
+      <artifactId>jboss-jaxb-api_2.2_spec</artifactId>
+      <scope>provided</scope>
+    </dependency>
   </dependencies>
 </project>
