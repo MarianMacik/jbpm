@@ -1,0 +1,8 @@
+<jboss-deployment-structure xmlns="urn:jboss:deployment-structure:1.2">
+  <deployment>
+    <dependencies>
+      <module name="org.jboss.ws.cxf.jbossws-cxf-client" services="import" export="true"/>
+      <module name="org.apache.cxf.impl" />
+    </dependencies>
+  </deployment>
+</jboss-deployment-structure>
